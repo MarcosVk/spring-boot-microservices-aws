@@ -1,0 +1,23 @@
+# Maven build output — never push these
+target/
+*.jar
+*.war
+*.class
+
+# Eclipse IDE files
+.classpath
+.project
+.settings/
+.factorypath
+
+# IntelliJ (just in case)
+.idea/
+*.iml
+
+# Spring Boot logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db

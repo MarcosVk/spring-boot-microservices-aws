@@ -1,0 +1,5 @@
+# Never push MySQL data
+mysql-data/
+
+# Environment files with secrets
+.env
