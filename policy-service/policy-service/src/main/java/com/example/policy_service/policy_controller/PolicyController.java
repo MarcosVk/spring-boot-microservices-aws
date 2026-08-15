@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.policy_service.dto.UserDTO;
 import com.example.policy_service.feign.UserClient;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -20,8 +21,8 @@ public class PolicyController {
 	@GetMapping("/{id}/user")
 	@CircuitBreaker(name = "userService", fallbackMethod = "fallbackUser")
 	public String getPolicy(@PathVariable int id) {
-		String user=userClient.getUser(id);
-		 return "Policy " + id + " belongs to " + user;
+		UserDTO user=userClient.getUser(id);
+		return "Policy " + id + " belongs to " + user.getName();
 		}
 	
 	private String fallbackUser(int id,Throwable ex) {

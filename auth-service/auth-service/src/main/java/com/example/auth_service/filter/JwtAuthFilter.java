@@ -30,6 +30,11 @@ public class JwtAuthFilter extends OncePerRequestFilter{
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
+		if (request.getRequestURI().equals("/actuator/health")) {
+		    filterChain.doFilter(request, response);
+		    return;
+		}
+		
 		String authHeader=request.getHeader("Authorization");
 		
 		if(authHeader!=null && authHeader.startsWith("Bearer ")) {

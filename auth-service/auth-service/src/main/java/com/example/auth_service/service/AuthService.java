@@ -9,6 +9,8 @@ import com.example.auth_service.dto.LoginRequest;
 import com.example.auth_service.dto.LoginResponse;
 import com.example.auth_service.dto.RegisterRequest;
 import com.example.auth_service.dto.RegisterResponse;
+import com.example.auth_service.event.UserEventProducer;
+import com.example.auth_service.event.UserRegisteredEvent;
 import com.example.auth_service.model.User;
 import com.example.auth_service.repository.UserRepository;
 import com.example.auth_service.util.JwtUtil;
@@ -24,6 +26,9 @@ public class AuthService {
 	
 	@Autowired 
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private UserEventProducer userEventProducer;
 	
 	public LoginResponse login(LoginRequest request) {
 		User user=userRepository.findByUserName(request.getUserName())
@@ -49,6 +54,10 @@ public class AuthService {
 		user.setRole(registerRequest.getRole()!=null? registerRequest.getRole():"ROLE_USER");
 		
 		User savedUser=userRepository.save(user);
+		
+		UserRegisteredEvent event=new UserRegisteredEvent(
+				savedUser.getUserName(),savedUser.getRole(),"New user registered");
+		userEventProducer.publishUserRegistered(event);
 		
 		return new RegisterResponse("User registered successfully", savedUser.getUserName(), savedUser.getRole());
 	}

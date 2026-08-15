@@ -1,4 +1,4 @@
-package com.example.user_service.filter;
+package com.example.policy_service.filter;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,27 +22,19 @@ public class RoleAuthFilter extends OncePerRequestFilter{
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		 System.out.println("REQUEST URI = " + request.getRequestURI());
-
-		    if (request.getRequestURI().equals("/actuator/health")) {
-		        System.out.println("HEALTH CHECK - BYPASSING AUTH");
-		        filterChain.doFilter(request, response);
-		        return;
-		    }
-		
 		String username=request.getHeader("X-User-Name");
 		String role=request.getHeader("X-User-Role");
 		
 		System.out.println("X-User-Name = " + username);
         System.out.println("X-User-Role = " + role);
-		
-		if(username!=null && role!=null) {
-			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken=
-					new UsernamePasswordAuthenticationToken(username, null,List.of(new SimpleGrantedAuthority(role)));
-			
-			SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-		}
-		filterChain.doFilter(request, response);
+        
+        if(username!=null && role!=null) {
+         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken=
+        		 new UsernamePasswordAuthenticationToken(username,null,List.of(new SimpleGrantedAuthority(role)));
+         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+         
+        }
+        filterChain.doFilter(request, response);
 		
 	}
 
