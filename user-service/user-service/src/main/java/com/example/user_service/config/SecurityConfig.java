@@ -23,7 +23,8 @@ public class SecurityConfig {
 		.sessionManagement(session->session
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 		.authorizeHttpRequests(auth->
-		auth.anyRequest().authenticated())
+		auth.requestMatchers("/actuator/health").permitAll()
+		.anyRequest().authenticated())
 		.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
 		
 		return httpSecurity.build();
