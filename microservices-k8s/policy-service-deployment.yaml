@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
         - name: policy-service
-          image: vicky02012002/policy-service:latest
+          image: vicky02012002/policy-service:v2
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8082
           readinessProbe:
